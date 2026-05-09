@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+
+button{
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.approve{
+    background:#10b981;
+    color:white;
+}
+
+.reject{
+    background:#ef4444;
+    color:white;
+}
+
+.pending{
+    color:#f59e0b;
+}
+
+.pro{
+    color:#10b981;
+}
+
+.free{
+    color:#94a3b8;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:20px;
+    background:#111827;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💰 Admin Payments Panel</h1>
+
+<input type="password" id="secret" placeholder="Admin Secret">
+
+<div id="payments"></div>
+
+<script>
+async function loadPayments(){
+
+    const secret = document.getElementById("secret").value;
+
+    const res = await fetch(`/api/admin/payments?secret=${secret}`);
+    const data = await res.json();
+
+    const box = document.getElementById("payments");
+    box.innerHTML = "";
+
+    if(!data.success){
+        box.innerHTML = "<h3>Unauthorized</h3>";
+        return;
+    }
+
+    if(data.payments.length === 0){
+        box.innerHTML = "<h3>No pending payments</h3>";
+        return;
+    }
+
+    data.payments.forEach(p => {
+
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+            <h3>${p.currency.toUpperCase()} Payment</h3>
+
+            <p><b>TXID:</b> ${p.txid}</p>
+            <p><b>User:</b> ${p.apiKey}</p>
+            <p><b>Status:</b> <span class="pending">${p.status}</span></p>
+
+            <br>
+
+            <button class="approve" onclick="approvePayment('${p.id}')">
+                Approve
+            </button>
+
+            <button class="reject" onclick="rejectPayment('${p.id}')">
+                Reject
+            </button>
+        `;
+
+        box.appendChild(div);
+    });
+}
+
+async function approvePayment(id){
+
+    const secret = document.getElementById("secret").value;
+
+    const res = await fetch("/api/admin/approve",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            secret,
+            paymentId:id
+        })
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    loadPayments();
+}
+
+async function rejectPayment(id){
+
+    const secret = document.getElementById("secret").value;
+
+    const res = await fetch("/api/admin/reject",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            secret,
+            paymentId:id
+        })
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    loadPayments();
+}
+
+setInterval(loadPayments,5000);
+</script>
+
+</body>
+</html>

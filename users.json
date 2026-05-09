@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "email": "test@user.com",
+    "apiKey": "FREE-KEY-123",
+    "plan": "free"
+  }
+]

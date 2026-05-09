@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  display: flex;
+}
+
+.sidebar {
+  width: 220px;
+  background: #111827;
+  height: 100vh;
+  padding: 20px;
+}
+
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+.card {
+  background: #1f2937;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+}
+
+button {
+  padding: 10px;
+  background: #38bdf8;
+  border: none;
+  cursor: pointer;
+}

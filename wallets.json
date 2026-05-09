@@ -1,0 +1,14 @@
+{
+  "pi": {
+    "address": "MALYJFJ5SVD45FBWN2GT4IW67SEZ3IBOFSBSPUFCWV427NBNLG3PWAAAAAAAAAU7CY6RQ",
+    "network": "pi"
+  },
+  "btc": {
+    "address": "3CnJHkC8FY5Gykro2B8858Q8SQ3a1qNf76",
+    "network": "bitcoin"
+  },
+  "eth": {
+    "address": "0x31d6a7e8fc4c72f5f97980b45d1cf38f3c68cdb4",
+    "network": "ethereum"
+  }
+}
